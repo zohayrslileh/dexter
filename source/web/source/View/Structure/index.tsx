@@ -1,8 +1,4 @@
-import { Lang } from "@/Tools/Language"
 import styled from "@emotion/styled"
-import Features from "./Features"
-import Donation from "./Donation"
-import Request from "./Request"
 
 /**
  * Structure
@@ -12,10 +8,7 @@ import Request from "./Request"
 export default function () {
 
     return <Container>
-        <p id="message"><Lang>Good Morning!</Lang> 😊</p>
-        <Features />
-        <Request />
-        <Donation />
+        <h1>Hello Worlf</h1>
     </Container>
 }
 
@@ -24,14 +17,4 @@ export default function () {
  * 
  */
 const Container = styled.div`
-    text-align: center;
-    line-height: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: 100%;
-
-    > #message {
-        font-size: 20px;
-    }
 `
