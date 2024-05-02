@@ -1,4 +1,4 @@
-import OKX from "@/Models/SDK/OKX"
+import Market from "@/Core/Binance/Market"
 
 /*
 |-----------------------------
@@ -9,37 +9,21 @@ import OKX from "@/Models/SDK/OKX"
 */
 export default async function () {
 
-    const buy = OKX({
-        method: "POST",
-        path: "/api/v5/trade/order",
-        data: {
-            "instId": "PEPE-USDT-SWAP",
-            "tdMode": "isolated",
-            "_feReq": true,
-            "side": "buy",
-            "sz": "54.7",
-            "posSide": "long",
-            "ordType": "market",
-            "_feBbo": false
-        }
-    })
+    const market = new Market
 
-    const sell = OKX({
-        method: "POST",
-        path: "/api/v5/trade/order",
-        data: {
-            "instId": "PEPE-USDT-SWAP",
-            "tdMode": "isolated",
-            "_feReq": true,
-            "side": "sell",
-            "sz": "54.7",
-            "posSide": "short",
-            "ordType": "market",
-            "_feBbo": false
-        }
-    })
+    const results: [string, number][] = []
 
-    console.log(await Promise.all([buy, sell]))
+    for (const asset of await market.assets()) {
+
+        const [candle] = await asset.candles({ interval: "15m", limit: 1 })
+
+        results.push([asset.symbol, candle.changePercent])
+
+        console.log(asset.symbol)
+
+    }
+
+    console.table(results.sort((item1, item2) => item2[1] - item1[1]))
 
     console.log("The test completed successfully 🧪 ")
 }
