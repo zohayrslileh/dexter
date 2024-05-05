@@ -10,6 +10,6 @@ import Router from "@/Tools/Console/Router"
 export default Router.create(function (build) {
 
     build.index(() => require("./all"))
-    build.route("extension", () => require("./extension"))
+    build.route("web", () => require("./web"))
     build.route("controller", () => require("./controller"))
 })

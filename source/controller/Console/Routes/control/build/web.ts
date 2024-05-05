@@ -4,7 +4,7 @@ import app from "@/Models/Config/package"
 
 /*
 |-----------------------------
-|  Extension builder
+|  Web builder
 |-----------------------------
 |
 |
@@ -18,10 +18,10 @@ export default async function () {
     terminal.break.step("Build Extension").break
 
     // Source path
-    const sourcePath = "source/extension"
+    const sourcePath = "source/web"
 
     // Distribution path
-    const distPath = "dist/extension"
+    const distPath = "dist/web"
 
     // Make source
     const source = new Navigator(sourcePath, { force: true })
@@ -35,9 +35,6 @@ export default async function () {
     // Run build command
     source.execute("npm run build", { VITE_API_VERSION: app.version })
 
-    // Copy extension
-    await source.go("extension").copy(distPath)
-
     // Move dist
-    await source.back().go("dist").move(distPath)
+    await source.go("dist").move(distPath)
 }

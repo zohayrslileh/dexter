@@ -1,5 +1,5 @@
 import controller from "./controller"
-import extension from "./extension"
+import web from "./web"
 
 /*
 |-----------------------------
@@ -11,5 +11,5 @@ import extension from "./extension"
 export default async function () {
 
     await controller()
-    await extension()
+    await web()
 }
