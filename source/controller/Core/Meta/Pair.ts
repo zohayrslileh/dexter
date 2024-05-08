@@ -61,10 +61,13 @@ export default class Pair {
         // Sell price
         const sellPrice = tick.bid || 0
 
+        // Spread
+        const spread = (buyPrice - sellPrice) / sellPrice
+
         // Market price
         const marketPrice = sellPrice + ((buyPrice - sellPrice) / 2)
 
-        return { buyPrice, sellPrice, marketPrice }
+        return { buyPrice, sellPrice, marketPrice, spread }
     }
 
     /**
