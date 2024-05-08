@@ -17,9 +17,9 @@ export default async function () {
 
     for (const pair of pairs) {
 
-        const candles = await pair.candles({ interval: "15m" })
+        const [candle1, candle2] = await pair.candles({ interval: "15m", limit: 2 })
 
-        console.log(pair.symbol, candles.length)
+        console.log(pair.symbol, candle1.bodyPercent > 0 && candle2.bodyPercent > 0)
 
     }
 
