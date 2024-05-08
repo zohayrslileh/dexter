@@ -19,7 +19,7 @@ export default async function () {
 
         const candles = await pair.candles({ interval: "15m" })
 
-        console.log(candles.length)
+        console.log(pair.symbol, candles.length)
 
     }
 
