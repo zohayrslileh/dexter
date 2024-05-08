@@ -15,7 +15,13 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    console.log(pairs.length)
+    for (const pair of pairs) {
+
+        const candles = await pair.candles({ interval: "15m" })
+
+        console.log(candles.length)
+
+    }
 
     console.log("The test completed successfully 🧪 ")
 }
