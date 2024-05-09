@@ -17,9 +17,15 @@ export default async function () {
 
     for (const pair of pairs) {
 
-        const info = await pair.info()
+        const [candle1, candle2, candle3] = await pair.candles({ interval: "15m", limit: 3 })
 
-        console.log(pair.symbol, (info.spread * 100).toFixed(2) + "%")
+        const condition =
+            candle1.bodyPercent > 0
+            && candle2.bodyPercent > 0
+            && candle3.bodyPercent > 0
+            && candle1.bodyPercent < candle2.bodyPercent
+
+        if (condition) console.log(pair.symbol)
 
     }
 
