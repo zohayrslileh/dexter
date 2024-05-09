@@ -24,6 +24,7 @@ export default async function () {
             && candle2.bodyPercent > 0
             && candle3.bodyPercent > 0
             && candle1.bodyPercent < candle2.bodyPercent
+            && candle2.bodyPercent < candle3.bodyPercent
 
         if (condition) console.log(pair.symbol)
 
