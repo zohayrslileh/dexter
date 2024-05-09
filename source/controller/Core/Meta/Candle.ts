@@ -72,10 +72,33 @@ export default class Candle {
         // Body height
         const bodyHeight = Math.abs(this.closePrice - this.openPrice)
 
-        // Height
-        const height = Math.abs(this.highPrice - this.lowPrice)
+        return bodyHeight / (this.highPrice - this.lowPrice)
+    }
 
-        return bodyHeight / height
+    /**
+     * Top tail percent
+     * 
+     * @returns
+     */
+    public get topTailPercent() {
+
+        // Tail height
+        const tailHeight = this.highPrice - Math.max(this.openPrice, this.closePrice)
+
+        return tailHeight / (this.highPrice - this.lowPrice)
+    }
+
+    /**
+     * Buttom tail percent
+     * 
+     * @returns
+     */
+    public get buttomTailPercent() {
+
+        // Tail height
+        const tailHeight = Math.min(this.openPrice, this.closePrice) - this.lowPrice
+
+        return tailHeight / (this.highPrice - this.lowPrice)
     }
 
 }
