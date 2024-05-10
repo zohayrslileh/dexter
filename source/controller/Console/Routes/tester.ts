@@ -17,9 +17,9 @@ export default async function () {
 
     for (const pair of pairs) {
 
-        const [candle1] = await pair.candles({ interval: "15m", limit: 1 })
+        const [_, candle] = await pair.candles({ interval: "4h", limit: 2 })
 
-        const condition = candle1.topTailPercent > 0.8 || candle1.buttomTailPercent > 0.8
+        const condition = candle.topTailPercent > 0.75 || candle.buttomTailPercent > 0.75
 
         if (condition) console.log(pair.symbol)
 
