@@ -34,7 +34,7 @@ export default async function () {
 
     }
 
-    console.log(items.sort((item1, item2) => item2.sort - item1.sort))
+    console.table(items.sort((item1, item2) => item2.sort - item1.sort))
 
     console.log("The test completed successfully 🧪 ")
 }
