@@ -101,6 +101,26 @@ export default class Candle {
         return tailHeight / (this.highPrice - this.lowPrice)
     }
 
+    /**
+     * Top method
+     * 
+     * @returns
+     */
+    public static top(candles: Candle[]) {
+
+        return Math.max(...candles.map(candle => candle.highPrice))
+    }
+
+    /**
+     * Bottom method
+     * 
+     * @returns
+     */
+    public static buttom(candles: Candle[]) {
+
+        return Math.min(...candles.map(candle => candle.lowPrice))
+    }
+
 }
 
 /**

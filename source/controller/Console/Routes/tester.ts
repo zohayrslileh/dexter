@@ -1,4 +1,5 @@
 import Account from "@/Core/Meta/Account"
+import Candle from "@/Core/Meta/Candle"
 
 /*
 |-----------------------------
@@ -15,21 +16,30 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    const symbols: { name: string, change: number }[] = []
+    const items: Item[] = []
 
     for (const pair of pairs) {
 
-        const [candle] = await pair.candles({ interval: "4h", limit: 1 })
+        const candles = await pair.candles({ interval: "4h", limit: 100 })
 
-        const symbol: { name: string, change: number } = { name: pair.symbol, change: candle.changePercent }
+        const buttom = Candle.buttom(candles)
 
-        symbols.push(symbol)
+        const price = candles[candles.length - 1].closePrice
 
-        console.log(symbol.name, (symbol.change * 100).toFixed(2) + "%")
+        const item: Item = { name: pair.symbol, sort: (price - buttom) / buttom }
+
+        items.push(item)
+
+        console.log(item.name, item.sort)
 
     }
 
-    console.log(symbols.sort((symbol1, symbol2) => symbol2.change - symbol1.change))
+    console.log(items.sort((item1, item2) => item2.sort - item1.sort))
 
     console.log("The test completed successfully 🧪 ")
+}
+
+interface Item {
+    name: string
+    sort: number
 }
