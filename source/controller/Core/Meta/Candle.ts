@@ -107,4 +107,4 @@ export default class Candle {
  * Interval
  * 
  */
-export type Interval = "1m" | "5m" | "15m" | "30m" | "60m" | "4h" | "1d" | "1W" | "1M"
+export type Interval = "1m" | "5m" | "15m" | "30m" | "1h" | "4h" | "1d" | "1W" | "1M"
