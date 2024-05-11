@@ -15,15 +15,21 @@ export default async function () {
 
     const pairs = await account.pairs()
 
+    const symbols: { name: string, change: number }[] = []
+
     for (const pair of pairs) {
 
-        const [_, candle] = await pair.candles({ interval: "4h", limit: 2 })
+        const [candle] = await pair.candles({ interval: "4h", limit: 1 })
 
-        const condition = candle.topTailPercent > 0.75 || candle.buttomTailPercent > 0.75
+        const symbol: { name: string, change: number } = { name: pair.symbol, change: candle.changePercent }
 
-        if (condition) console.log(pair.symbol)
+        symbols.push(symbol)
+
+        console.log(symbol.name, (symbol.change * 100).toFixed(2) + "%")
 
     }
+
+    console.log(symbols.sort((symbol1, symbol2) => symbol2.change - symbol1.change))
 
     console.log("The test completed successfully 🧪 ")
 }
