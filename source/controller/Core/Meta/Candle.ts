@@ -53,6 +53,16 @@ export default class Candle {
     }
 
     /**
+     * Body
+     * 
+     * @returns
+     */
+    public get body() {
+
+        return this.closePrice - this.openPrice
+    }
+
+    /**
      * Get change percent
      * 
      * @returns

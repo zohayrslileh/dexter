@@ -1,5 +1,4 @@
 import Account from "@/Core/Meta/Account"
-import Candle from "@/Core/Meta/Candle"
 
 /*
 |-----------------------------
@@ -20,17 +19,11 @@ export default async function () {
 
     for (const pair of pairs) {
 
-        const candles = await pair.candles({ interval: "4h", limit: 100 })
+        const [candle2, candle1] = await pair.candles({ interval: "4h", limit: 2 })
 
-        const buttom = Candle.buttom(candles)
+        const condition = candle2.body > candle1.body * 1.1 && candle2.bodyPercent > 0.5
 
-        const price = candles[candles.length - 1].closePrice
-
-        const item: Item = { name: pair.symbol, sort: (price - buttom) / buttom }
-
-        items.push(item)
-
-        console.log(item.name, item.sort)
+        if(condition) console.log(pair.symbol)
 
     }
 
