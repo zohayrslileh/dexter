@@ -23,7 +23,7 @@ export default async function () {
 
         const condition = candle2.body > candle1.body * 1.1 && candle2.bodyPercent > 0.5
 
-        if(condition) console.log(pair.symbol)
+        if (condition) console.log(pair.symbol)
 
     }
 
