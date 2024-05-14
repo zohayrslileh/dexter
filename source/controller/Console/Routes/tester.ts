@@ -24,14 +24,14 @@ export default async function () {
         const condition_up = true
             && candle2_4h.body > 0 && candle1_4h.body > 0
             && candle2_15m.body > 0 && candle1_15m.body > 0
-            && candle2_4h.bodyPercent > 0.5 && candle1_4h.bodyPercent > 0.5
-            && candle2_15m.bodyPercent > 0.5 && candle1_15m.bodyPercent > 0.5
+            && candle2_4h.bodyPercent > 0.45 && candle1_4h.bodyPercent > 0.45
+            && candle2_15m.bodyPercent > 0.45 && candle1_15m.bodyPercent > 0.45
 
         const condition_down = true
             && candle2_4h.body < 0 && candle1_4h.body < 0
             && candle2_15m.body < 0 && candle1_15m.body < 0
-            && candle2_4h.bodyPercent > 0.5 && candle1_4h.bodyPercent > 0.5
-            && candle2_15m.bodyPercent > 0.5 && candle1_15m.bodyPercent > 0.5
+            && candle2_4h.bodyPercent > 0.45 && candle1_4h.bodyPercent > 0.45
+            && candle2_15m.bodyPercent > 0.45 && candle1_15m.bodyPercent > 0.45
 
         const condition = condition_up || condition_down
 
