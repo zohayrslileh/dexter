@@ -15,24 +15,29 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    const items: Item[] = []
-
     for (const pair of pairs) {
 
-        const [candle2, candle1] = await pair.candles({ interval: "4h", limit: 2 })
+        const [candle2_4h, candle1_4h] = await pair.candles({ interval: "4h", limit: 2 })
 
-        const condition = candle2.body > candle1.body * 1.1 && candle2.bodyPercent > 0.5
+        const [candle2_15m, candle1_15m] = await pair.candles({ interval: "15m", limit: 2 })
+
+        const condition_up = true
+            && candle2_4h.body > 0 && candle1_4h.body > 0
+            && candle2_15m.body > 0 && candle1_15m.body > 0
+            && candle2_4h.bodyPercent > 0.5 && candle1_4h.bodyPercent > 0.5
+            && candle2_15m.bodyPercent > 0.5 && candle1_15m.bodyPercent > 0.5
+
+        const condition_down = true
+            && candle2_4h.body < 0 && candle1_4h.body < 0
+            && candle2_15m.body < 0 && candle1_15m.body < 0
+            && candle2_4h.bodyPercent > 0.5 && candle1_4h.bodyPercent > 0.5
+            && candle2_15m.bodyPercent > 0.5 && candle1_15m.bodyPercent > 0.5
+
+        const condition = condition_up || condition_down
 
         if (condition) console.log(pair.symbol)
 
     }
 
-    console.table(items.sort((item1, item2) => item2.sort - item1.sort))
-
     console.log("The test completed successfully 🧪 ")
-}
-
-interface Item {
-    name: string
-    sort: number
 }
