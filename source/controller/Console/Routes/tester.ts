@@ -15,29 +15,33 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    for (const pair of pairs) {
+    const pair = pairs.find(pair => pair.symbol === "BTCUSD")
 
-        const [candle2_4h, candle1_4h] = await pair.candles({ interval: "4h", limit: 2 })
+    if (!pair) throw new Error("Pair was not found")
 
-        const [candle2_15m, candle1_15m] = await pair.candles({ interval: "15m", limit: 2 })
+    const info = await pair.info()
 
-        const condition_up = true
-            && candle2_4h.body > 0 && candle1_4h.body > 0
-            && candle2_15m.body > 0 && candle1_15m.body > 0
-            && candle2_4h.bodyPercent > 0.45 && candle1_4h.bodyPercent > 0.45
-            && candle2_15m.bodyPercent > 0.45 && candle1_15m.bodyPercent > 0.45
+    const sizeStopLoss = info.marketPrice * 0.0017
 
-        const condition_down = true
-            && candle2_4h.body < 0 && candle1_4h.body < 0
-            && candle2_15m.body < 0 && candle1_15m.body < 0
-            && candle2_4h.bodyPercent > 0.45 && candle1_4h.bodyPercent > 0.45
-            && candle2_15m.bodyPercent > 0.45 && candle1_15m.bodyPercent > 0.45
+    const sizeTakeProfit = info.marketPrice * 0.002
 
-        const condition = condition_up || condition_down
+    const buyStopLoss = info.marketPrice - sizeStopLoss
 
-        if (condition) console.log(pair.symbol)
+    const buyTakeProfit = info.marketPrice + sizeTakeProfit
 
-    }
+    const sellStopLoss = info.marketPrice + sizeStopLoss
+
+    const sellTakeProfit = info.marketPrice - sizeTakeProfit
+
+    const volume = 0.1
+
+    const buyOrder = await pair.buy({ volume, stopLoss: buyStopLoss, takeProfit: buyTakeProfit })
+
+    const sellOrder = await pair.sell({ volume, stopLoss: sellStopLoss, takeProfit: sellTakeProfit })
+
+    console.log("BUY: ", buyOrder.id)
+
+    console.log("SELL: ", sellOrder.id)
 
     console.log("The test completed successfully 🧪 ")
 }
