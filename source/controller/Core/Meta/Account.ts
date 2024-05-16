@@ -82,4 +82,17 @@ export default class Account {
         return symbols.map(symbol => new Pair(symbol, instance, connection))
     }
 
+    /**
+     * Orders
+     * 
+     * @returns
+     */
+    public async orders() {
+
+        // Check instance & connection
+        if (!this.connection) throw new Error("Please connect account first")
+
+        return await this.connection.getOrders()
+    }
+
 }
