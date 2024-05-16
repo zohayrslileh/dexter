@@ -16,15 +16,15 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    const pair = pairs.find(pair => pair.symbol === "GBPUSD")
+    for (const pair of pairs) {
 
-    if (!pair) throw new Error("Pair was not found")
+        const candles = await pair.candles({ interval: "4h", limit: 14 })
 
-    const candles = await pair.candles({ interval: "4h", limit: 14 })
+        const [rsi] = calculateRSI(candles.map(candle => candle.closePrice))
 
-    const rsi = calculateRSI(candles.map(candle => candle.closePrice))
+        console.log(pair.symbol, rsi)
 
-    console.log(rsi)
+    }
 
     console.log("The test completed successfully 🧪 ")
 }
