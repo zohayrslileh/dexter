@@ -1,5 +1,5 @@
+import calculateRSI from "@/Core/Indicator/RSI"
 import Account from "@/Core/Meta/Account"
-import calculateRSI from "@/Core/Meta/RSI"
 
 /*
 |-----------------------------
