@@ -1,3 +1,4 @@
+import calculateRSI from "@/Core/Indicator/RSI"
 import Account from "@/Core/Meta/Account"
 
 /*
@@ -17,7 +18,35 @@ export default async function () {
 
     for (const pair of pairs.filter(pair => !pair.symbol.includes("_"))) {
 
-        await pair.candles({ interval: "4h", limit: 1 })
+        try {
+
+            const candles = await pair.candles({ interval: "4h", limit: 14 })
+
+            const [rsi] = calculateRSI(candles.map(candle => candle.closePrice))
+
+            if (rsi > 75) {
+
+                const order = await pair.sell({ volume: 0.1 })
+
+                console.log(`OPERATION: SELL | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
+
+            }
+
+            else if (rsi < 25) {
+
+                const order = await pair.buy({ volume: 0.1 })
+
+                console.log(`OPERATION: BUY | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
+
+            }
+
+            else console.log(`OPERATION: NON | PAIR: ${pair.symbol}`)
+
+        } catch {
+
+            console.log("ERROR TO DO THIS OPIRATION")
+
+        }
 
     }
 
