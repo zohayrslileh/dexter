@@ -83,16 +83,16 @@ export default class Account {
     }
 
     /**
-     * Orders
+     * Positions
      * 
      * @returns
      */
-    public async orders() {
+    public async positions() {
 
         // Check instance & connection
         if (!this.connection) throw new Error("Please connect account first")
 
-        return await this.connection.getOrders()
+        return await this.connection.getPositions()
     }
 
 }
