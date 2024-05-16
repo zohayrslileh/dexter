@@ -21,15 +21,15 @@ export default async function () {
 
         try {
 
-            const candles = await pair.candles({ interval: "15m", limit: 14 })
+            const candles_4h = await pair.candles({ interval: "4h", limit: 14 })
 
-            // const lastCandle = candles[candles.length - 1]
+            const candles_15m = await pair.candles({ interval: "15m", limit: 14 })
 
-            const [rsi] = calculateRSI(candles.map(candle => candle.closePrice)).reverse()
+            const [rsi_4h] = calculateRSI(candles_4h.map(candle => candle.closePrice))
 
-            // const [sma200] = calculateSMA(candles.map(candle => candle.closePrice), 200).reverse()
+            const [rsi_15m] = calculateRSI(candles_15m.map(candle => candle.closePrice))
 
-            if (rsi > 75) {
+            if (rsi_4h > 75 && rsi_15m > 75) {
 
                 const order = await pair.sell({ volume: 0.1 })
 
@@ -37,7 +37,7 @@ export default async function () {
 
             }
 
-            else if (rsi < 25) {
+            else if (rsi_4h < 25 && rsi_15m < 25) {
 
                 const order = await pair.buy({ volume: 0.1 })
 
