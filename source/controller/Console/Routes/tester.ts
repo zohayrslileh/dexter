@@ -27,9 +27,9 @@ export default async function () {
 
             const [rsi] = calculateRSI(candles.map(candle => candle.closePrice)).reverse()
 
-            const [sma100] = calculateSMA(candles.map(candle => candle.closePrice), 100).reverse()
+            const [sma200] = calculateSMA(candles.map(candle => candle.closePrice), 200).reverse()
 
-            if (rsi > 75 && lastCandle.closePrice < sma100) {
+            if (rsi > 75 && lastCandle.closePrice < sma200) {
 
                 const order = await pair.sell({ volume: 0.1 })
 
@@ -37,7 +37,7 @@ export default async function () {
 
             }
 
-            else if (rsi < 25 && lastCandle.closePrice > sma100) {
+            else if (rsi < 25 && lastCandle.closePrice > sma200) {
 
                 const order = await pair.buy({ volume: 0.1 })
 
