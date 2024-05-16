@@ -29,7 +29,7 @@ export default async function () {
 
             const [rsi_15m] = calculateRSI(candles_15m.map(candle => candle.closePrice))
 
-            if (rsi_4h > 75 && rsi_15m > 75) {
+            if (rsi_4h > 71 && rsi_15m > 71) {
 
                 const order = await pair.sell({ volume: 0.1 })
 
@@ -37,7 +37,7 @@ export default async function () {
 
             }
 
-            else if (rsi_4h < 25 && rsi_15m < 25) {
+            else if (rsi_4h < 29 && rsi_15m < 29) {
 
                 const order = await pair.buy({ volume: 0.1 })
 
