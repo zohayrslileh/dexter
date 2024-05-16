@@ -130,6 +130,6 @@ export interface CandlesConfig {
  */
 export interface OrderConfig {
     volume: number
-    takeProfit: number
-    stopLoss: number
+    takeProfit?: number
+    stopLoss?: number
 }
