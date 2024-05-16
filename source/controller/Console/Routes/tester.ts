@@ -11,7 +11,7 @@ import Account from "@/Core/Meta/Account"
 */
 export default async function () {
 
-    const account = new Account("a1109461-09ce-4364-bf01-31a280539fb7")
+    const account = new Account("d212b44f-b07a-4bc6-bd49-5be4834f1a15")
 
     await account.connect()
 
