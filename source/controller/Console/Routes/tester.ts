@@ -1,5 +1,5 @@
+// import calculateSMA from "@/Core/Indicator/SMA"
 import calculateRSI from "@/Core/Indicator/RSI"
-import calculateSMA from "@/Core/Indicator/SMA"
 import Account from "@/Core/Meta/Account"
 
 /*
@@ -21,15 +21,15 @@ export default async function () {
 
         try {
 
-            const candles = await pair.candles({ interval: "15m", limit: 100 })
+            const candles = await pair.candles({ interval: "15m", limit: 14 })
 
-            const lastCandle = candles[candles.length - 1]
+            // const lastCandle = candles[candles.length - 1]
 
             const [rsi] = calculateRSI(candles.map(candle => candle.closePrice)).reverse()
 
-            const [sma200] = calculateSMA(candles.map(candle => candle.closePrice), 200).reverse()
+            // const [sma200] = calculateSMA(candles.map(candle => candle.closePrice), 200).reverse()
 
-            if (rsi > 75 && lastCandle.closePrice < sma200) {
+            if (rsi > 75) {
 
                 const order = await pair.sell({ volume: 0.1 })
 
@@ -37,7 +37,7 @@ export default async function () {
 
             }
 
-            else if (rsi < 25 && lastCandle.closePrice > sma200) {
+            else if (rsi < 25) {
 
                 const order = await pair.buy({ volume: 0.1 })
 
