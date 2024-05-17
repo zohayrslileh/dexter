@@ -16,7 +16,7 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    for (const pair of pairs.filter(pair => !pair.symbol.includes("_"))) {
+    for (const pair of pairs.filter(pair => pair.symbol === "CADCHF")) {
 
         try {
 
@@ -32,7 +32,13 @@ export default async function () {
 
             if (stochastic > 85 && lastCandle.body < 0) {
 
-                const order = await pair.sell({ volume: 0.1 })
+                const range = lastCandle.highPrice - lastCandle.closePrice
+
+                const SL = lastCandle.closePrice + range
+
+                const TP = lastCandle.closePrice - range * 2
+
+                const order = await pair.sell({ volume: 0.1, stopLoss: SL, takeProfit: TP })
 
                 console.log(`OPERATION: SELL | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
@@ -40,7 +46,13 @@ export default async function () {
 
             else if (stochastic < 15 && lastCandle.body > 0) {
 
-                const order = await pair.buy({ volume: 0.1 })
+                const range = lastCandle.closePrice - lastCandle.lowPrice
+
+                const SL = lastCandle.closePrice - range
+
+                const TP = lastCandle.closePrice + range * 2
+
+                const order = await pair.buy({ volume: 0.1, stopLoss: SL, takeProfit: TP })
 
                 console.log(`OPERATION: BUY | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
