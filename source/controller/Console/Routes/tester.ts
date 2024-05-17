@@ -30,7 +30,7 @@ export default async function () {
                 candles.map(candle => candle.lowPrice)
             )
 
-            if (stochastic > 85 && lastCandle.body < 0) {
+            if (stochastic > 85) {
 
                 const range = lastCandle.highPrice - lastCandle.closePrice
 
@@ -44,7 +44,7 @@ export default async function () {
 
             }
 
-            else if (stochastic < 15 && lastCandle.body > 0) {
+            else if (stochastic < 15) {
 
                 const range = lastCandle.closePrice - lastCandle.lowPrice
 
