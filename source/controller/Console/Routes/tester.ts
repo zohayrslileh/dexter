@@ -20,12 +20,13 @@ export default async function () {
 
         try {
 
-            const candles = await pair.candles({ interval: "4h", limit: 14 })
+            const candles = await pair.candles({ interval: "4h", limit: 100 })
 
             const { K: [stochastic] } = calculateStochastic(
                 candles.map(candle => candle.closePrice),
                 candles.map(candle => candle.highPrice),
-                candles.map(candle => candle.lowPrice)
+                candles.map(candle => candle.lowPrice),
+                100
             )
 
             if (stochastic > 85) {
