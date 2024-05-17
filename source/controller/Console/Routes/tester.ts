@@ -16,7 +16,7 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    for (const pair of pairs.filter(pair => pair.symbol === "CADCHF")) {
+    for (const pair of pairs.filter(pair => !pair.symbol.includes("_"))) {
 
         try {
 
