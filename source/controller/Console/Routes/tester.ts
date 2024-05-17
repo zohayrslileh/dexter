@@ -28,7 +28,7 @@ export default async function () {
                 candles.map(candle => candle.lowPrice)
             )
 
-            if (stochastic > 75) {
+            if (stochastic > 85) {
 
                 const order = await pair.sell({ volume: 0.1 })
 
@@ -36,7 +36,7 @@ export default async function () {
 
             }
 
-            else if (stochastic < 25) {
+            else if (stochastic < 15) {
 
                 const order = await pair.buy({ volume: 0.1 })
 
