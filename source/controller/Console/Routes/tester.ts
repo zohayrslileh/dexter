@@ -22,8 +22,6 @@ export default async function () {
 
             const candles = await pair.candles({ interval: "4h", limit: 14 })
 
-            const lastCandle = candles[candles.length - 1]
-
             const { K: [stochastic] } = calculateStochastic(
                 candles.map(candle => candle.closePrice),
                 candles.map(candle => candle.highPrice),
@@ -32,13 +30,7 @@ export default async function () {
 
             if (stochastic > 85) {
 
-                const range = lastCandle.highPrice - lastCandle.closePrice
-
-                const SL = lastCandle.closePrice + range
-
-                const TP = lastCandle.closePrice - range * 2
-
-                const order = await pair.sell({ volume: 0.1, stopLoss: SL, takeProfit: TP })
+                const order = await pair.sell({ volume: 0.1 })
 
                 console.log(`OPERATION: SELL | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
@@ -46,13 +38,7 @@ export default async function () {
 
             else if (stochastic < 15) {
 
-                const range = lastCandle.closePrice - lastCandle.lowPrice
-
-                const SL = lastCandle.closePrice - range
-
-                const TP = lastCandle.closePrice + range * 2
-
-                const order = await pair.buy({ volume: 0.1, stopLoss: SL, takeProfit: TP })
+                const order = await pair.buy({ volume: 0.1 })
 
                 console.log(`OPERATION: BUY | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
