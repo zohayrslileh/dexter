@@ -1,4 +1,4 @@
-import calculateRSI from "@/Core/Indicator/RSI"
+import calculateStochastic from "@/Core/Indicator/Stochastic"
 import Account from "@/Core/Meta/Account"
 
 /*
@@ -22,19 +22,23 @@ export default async function () {
 
             const candles = await pair.candles({ interval: "4h", limit: 14 })
 
-            const [rsi] = calculateRSI(candles.map(candle => candle.closePrice))
+            const { K: [stochastic] } = calculateStochastic(
+                candles.map(candle => candle.closePrice),
+                candles.map(candle => candle.highPrice),
+                candles.map(candle => candle.lowPrice)
+            )
 
-            if (rsi > 65) {
+            if (stochastic > 75) {
 
-                const order = await pair.buy({ volume: 0.1 })
+                const order = await pair.sell({ volume: 0.1 })
 
                 console.log(`OPERATION: SELL | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
             }
 
-            else if (rsi < 35) {
+            else if (stochastic < 25) {
 
-                const order = await pair.sell({ volume: 0.1 })
+                const order = await pair.buy({ volume: 0.1 })
 
                 console.log(`OPERATION: BUY | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
