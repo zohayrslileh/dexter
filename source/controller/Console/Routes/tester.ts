@@ -22,21 +22,19 @@ export default async function () {
 
             const candles = await pair.candles({ interval: "4h", limit: 14 })
 
-            const lastCandle = candles[candles.length - 1]
-
             const [rsi] = calculateRSI(candles.map(candle => candle.closePrice))
 
-            if (rsi > 75 && lastCandle.body < 0) {
+            if (rsi > 65) {
 
-                const order = await pair.sell({ volume: 0.1 })
+                const order = await pair.buy({ volume: 0.1 })
 
                 console.log(`OPERATION: SELL | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
             }
 
-            else if (rsi < 25 && lastCandle.body > 0) {
+            else if (rsi < 35) {
 
-                const order = await pair.buy({ volume: 0.1 })
+                const order = await pair.sell({ volume: 0.1 })
 
                 console.log(`OPERATION: BUY | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
