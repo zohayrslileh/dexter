@@ -31,7 +31,7 @@ export default async function () {
 
             if (stochastic > 85) {
 
-                const order = await pair.sell({ volume: 0.1 })
+                const order = await pair.buy({ volume: 0.1 })
 
                 console.log(`OPERATION: SELL | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
@@ -39,7 +39,7 @@ export default async function () {
 
             else if (stochastic < 15) {
 
-                const order = await pair.buy({ volume: 0.1 })
+                const order = await pair.sell({ volume: 0.1 })
 
                 console.log(`OPERATION: BUY | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
 
