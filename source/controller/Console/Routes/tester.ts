@@ -1,5 +1,6 @@
-import calculateStochastic from "@/Core/Indicator/Stochastic"
 import Account from "@/Core/Meta/Account"
+import Order from "@/Core/Meta/Order"
+import sleep from "@/Tools/Sleep"
 
 /*
 |-----------------------------
@@ -16,42 +17,58 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    for (const pair of pairs.filter(pair => !pair.symbol.includes("_"))) {
+    const pair = pairs.find(pair => pair.symbol === "EURUSD")
 
-        try {
+    if (!pair) throw new Error
 
-            const candles = await pair.candles({ interval: "4h", limit: 100 })
+    console.log("Get info 1")
 
-            const { K: [stochastic] } = calculateStochastic(
-                candles.map(candle => candle.closePrice),
-                candles.map(candle => candle.highPrice),
-                candles.map(candle => candle.lowPrice),
-                100
-            )
+    const info1 = await pair.info()
 
-            if (stochastic > 85) {
+    console.log("Wait same time")
 
-                const order = await pair.buy({ volume: 0.1 })
+    await sleep(10 * 1000)
 
-                console.log(`OPERATION: SELL | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
+    console.log("Get info 1")
 
-            }
+    const info2 = await pair.info()
 
-            else if (stochastic < 15) {
+    var order: Order | undefined
 
-                const order = await pair.sell({ volume: 0.1 })
+    if (info1.marketPrice > info2.marketPrice) {
 
-                console.log(`OPERATION: BUY | ORDER_ID: ${order.id} | PAIR: ${pair.symbol}`)
+        order = await pair.sell({ volume: 0.05 })
+    }
 
-            }
+    else if (info1.marketPrice < info2.marketPrice) {
 
-            else console.log(`OPERATION: NON | PAIR: ${pair.symbol}`)
+        order = await pair.buy({ volume: 0.05 })
+    }
 
-        } catch {
+    if (order) {
 
-            console.log("ERROR TO DO THIS OPIRATION")
+        console.log("Wait order time")
 
-        }
+        do {
+
+            const positions = await account.positions()
+
+            const position = positions.find(position => position.symbol === pair.symbol)
+
+            if (!position) throw new Error
+
+            console.log(position.profit)
+
+            if (position.profit > 3 || position.profit < -1.5) break
+
+            await sleep(500)
+
+        } while (true)
+
+        console.log("Close order")
+
+        await order.close()
+
 
     }
 
