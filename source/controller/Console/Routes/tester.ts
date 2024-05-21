@@ -17,60 +17,65 @@ export default async function () {
 
     const pairs = await account.pairs()
 
-    const pair = pairs.find(pair => pair.symbol === "EURUSD")
+    const pair = pairs.find(pair => pair.symbol === "GBPUSD")
 
     if (!pair) throw new Error
 
-    console.log("Get info 1")
+    do {
 
-    const info1 = await pair.info()
+        console.log("Get info 1")
 
-    console.log("Wait same time")
+        const info1 = await pair.info()
 
-    await sleep(10 * 1000)
+        console.log("Wait same time")
 
-    console.log("Get info 1")
+        await sleep(10 * 1000)
 
-    const info2 = await pair.info()
+        console.log("Get info 1")
 
-    var order: Order | undefined
+        const info2 = await pair.info()
 
-    if (info1.marketPrice > info2.marketPrice) {
+        var order: Order | undefined
 
-        order = await pair.sell({ volume: 0.05 })
-    }
+        if (info1.marketPrice > info2.marketPrice) {
 
-    else if (info1.marketPrice < info2.marketPrice) {
+            order = await pair.sell({ volume: 0.5 })
+        }
 
-        order = await pair.buy({ volume: 0.05 })
-    }
+        else if (info1.marketPrice < info2.marketPrice) {
 
-    if (order) {
+            order = await pair.buy({ volume: 0.5 })
+        }
 
-        console.log("Wait order time")
+        if (order) {
 
-        do {
+            console.log("Wait order time")
 
-            const positions = await account.positions()
+            // do {
+            // 
+            //     const positions = await account.positions()
+            // 
+            //     const position = positions.find(position => position.symbol === pair.symbol)
+            // 
+            //     if (!position) throw new Error
+            // 
+            //     console.log(position.profit)
+            // 
+            //     if (position.profit > 3 || position.profit < -1.5) break
+            // 
+            //     await sleep(500)
+            // 
+            // } while (true)
+            // 
+            // console.log("Close order")
 
-            const position = positions.find(position => position.symbol === pair.symbol)
+            await sleep(10 * 1000)
 
-            if (!position) throw new Error
+            await order.close()
 
-            console.log(position.profit)
+        }
 
-            if (position.profit > 3 || position.profit < -1.5) break
-
-            await sleep(500)
-
-        } while (true)
-
-        console.log("Close order")
-
-        await order.close()
-
-
-    }
+    } while (true)
 
     console.log("The test completed successfully 🧪 ")
 }
